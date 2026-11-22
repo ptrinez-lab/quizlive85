@@ -290,6 +290,12 @@ button.jeton:hover{text-decoration:line-through;background:var(--ko)}
 .explic .titre{font-family:var(--display);letter-spacing:.2em;font-size:1.4cqi;color:var(--ok);font-weight:700}
 .explic .bonne{font-family:var(--display);font-weight:700;font-size:3.2cqi;line-height:1.05;margin:.6cqi 0 1cqi}
 .explic p{font-size:1.8cqi;margin:0;opacity:.9}
+.explic p.long{font-size:1.45cqi;line-height:1.35}
+.explic p.tres-long{font-size:1.15cqi;line-height:1.35}
+.enonce.long{font-size:2.8cqi}
+.compteur-car{text-align:right;margin-top:-2px}
+.explic{max-height:100%;overflow:hidden}
+.ej{overflow-y:auto}
 .explic .taux{margin-top:1.4cqi;font-size:1.6cqi;color:var(--texte-2)}
 .explic .taux b{font-family:var(--display);font-size:3cqi;color:var(--texte)}
 .classement{flex:1;display:flex;flex-direction:column;justify-content:center;gap:1cqi;max-width:76cqi;width:100%;margin:0 auto}
@@ -1263,19 +1269,19 @@ function formulaireQuestion(q){
   return `
     <div class="champ"><span class="lab">Type de question</span>
       <div class="segment" role="group" aria-label="Type de question">${Object.entries({qcm:'QCM unique', multi:'QCM multiple', vf:'Vrai / Faux', image:'Image', sondage:'Sondage'}).map(([k,l]) => `<button data-act="type-q" data-t="${k}" aria-pressed="${q.type === k}">${l}</button>`).join('')}</div></div>
-    <div class="champ"><label for="txt-q">Intitulé</label><textarea id="txt-q" data-act="champ-q" data-k="texte" maxlength="160">${esc(q.texte)}</textarea></div>
+    <div class="champ"><label for="txt-q">Intitulé</label><textarea id="txt-q" data-act="champ-q" data-k="texte" maxlength="200">${esc(q.texte)}</textarea><span class="etiquette compteur-car" data-pour="texte">${q.texte.length} / 200</span></div>
     ${q.type === 'image' ? `<div class="champ"><label for="img-q">Image (photo, pictogramme, plaque…). Elle est réduite automatiquement.</label><input id="img-q" type="file" accept="image/*" data-act="image-q">
       ${q.imageData ? `<img class="apercu-img" src="${q.imageData}" alt="Aperçu de l’image">` : (q.image && IMAGES[q.image] ? `<div class="apercu-img" style="overflow:hidden">${IMAGES[q.image]}</div>` : '')}</div>` : ''}
     <div class="champ"><span class="lab">Réponses ${q.type === 'sondage' ? '(sondage : aucune bonne réponse)' : q.type === 'multi' ? '(cochez toutes les bonnes réponses)' : '(cochez la bonne réponse)'}</span>
       <div class="rep-edit">${q.reponses.slice(0, n).map((r,i) => `<div class="rep-ligne"><span class="lettre c${i}">${LETTRES[i]}</span>
-          <input aria-label="Réponse ${LETTRES[i]}" value="${esc(r)}" data-act="rep-q" data-i="${i}" ${q.type === 'vf' ? 'readonly' : ''} maxlength="60" placeholder="Réponse ${LETTRES[i]}">
+          <input aria-label="Réponse ${LETTRES[i]}" value="${esc(r)}" data-act="rep-q" data-i="${i}" ${q.type === 'vf' ? 'readonly' : ''} maxlength="80" placeholder="Réponse ${LETTRES[i]}">
           ${q.type !== 'sondage' ? `<button class="juste" data-act="juste-q" data-i="${i}" aria-pressed="${q.bonnes.includes(i)}" aria-label="Marquer ${LETTRES[i]} comme bonne réponse">✓</button>` : '<span></span>'}</div>`).join('')}</div></div>
     <div class="trio">
       <div class="champ"><label for="duree-q">Durée</label><select id="duree-q" data-act="champ-q" data-k="duree" data-num="1">${[10,15,20,25,30,45,60,90].map(d => `<option value="${d}" ${d === q.duree ? 'selected' : ''}>${d} secondes</option>`).join('')}</select></div>
       <div class="champ"><label for="coef-q">Coefficient de points</label><select id="coef-q" data-act="champ-q" data-k="coef" data-num="1" ${q.type === 'sondage' ? 'disabled' : ''}>${[1,2,3].map(c => `<option value="${c}" ${c === q.coef ? 'selected' : ''}>× ${c}${['',' (standard)',' (difficile)',' (expert)'][c]}</option>`).join('')}</select></div>
       <div class="champ"><label for="comp-q">Compétence</label><input id="comp-q" maxlength="60" value="${esc(q.competence)}" data-act="champ-q" data-k="competence"></div>
     </div>
-    <div class="champ"><label for="exp-q">Explication pédagogique (affichée après la réponse)</label><textarea id="exp-q" data-act="champ-q" data-k="explication" maxlength="240">${esc(q.explication)}</textarea></div>
+    <div class="champ"><label for="exp-q">Explication pédagogique (affichée après la réponse)</label><textarea id="exp-q" data-act="champ-q" data-k="explication" maxlength="600">${esc(q.explication)}</textarea><span class="etiquette compteur-car" data-pour="explication">${(q.explication || '').length} / 600</span></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-act="dupliquer-q">Dupliquer la question</button><button class="btn fant" data-act="supprimer-q">Supprimer la question</button></div>`;
 }
 function changerType(q, t){
@@ -1428,7 +1434,7 @@ function rendreProj(){
   } else if (st.phase === 'question'){
     const cpt = `<div class="compteur-rep"><b class="num" id="nb-rep-proj">${st.answers_count}</b><span>RÉPONSES</span></div>`;
     h = `<div class="cadre">${bandeau(`Question ${st.q_index+1} / ${st.total}${q.competence ? ' · ' + esc(q.competence) : ''}`)}
-      <div class="question"><div class="enonce">${esc(q.texte)}${q.type === 'multi' ? '<small>Plusieurs réponses possibles</small>' : ''}</div>
+      <div class="question"><div class="enonce${q.texte.length > 120 ? ' long' : ''}">${esc(q.texte)}${q.type === 'multi' ? '<small>Plusieurs réponses possibles</small>' : ''}</div>
         <div class="milieu"><div>${manometre()}</div><div class="media">${q.type === 'image' ? imageQuestion(q) : cpt}</div><div>${q.type === 'image' ? cpt : ''}</div></div>
         <div class="tuiles">${q.reponses.map((r,i) => `<div class="tuile c${i}" style="--i:${i}"><span class="l">${LETTRES[i]}</span><span>${esc(r)}</span></div>`).join('')}</div></div></div>`;
   } else if (st.phase === 'revel'){
@@ -1437,7 +1443,7 @@ function rendreProj(){
     h = `<div class="cadre">${bandeau(`Question ${st.q_index+1} / ${st.total}`)}<div class="enonce-revel">${esc(q.texte)}</div>
       <div class="revel"><div class="barres">${q.reponses.map((r,i) => `<div class="barre ${sondage ? '' : (q.bonnes.includes(i) ? 'juste' : 'faux')}"><span class="val num">${R.counts[i]}</span><div class="col c${i}" data-h="${Math.max(3, R.counts[i] / max * 100)}"></div><div class="pied"><b>${LETTRES[i]}</b>${esc(r)}</div></div>`).join('')}</div>
         <div class="explic">${sondage ? `<div class="titre">SONDAGE</div><div class="bonne">${R.repondants} avis recueillis</div><p>Résultats anonymes, sans points.</p>` :
-          `<div class="titre">BONNE RÉPONSE</div><div class="bonne">${q.bonnes.map(i => esc(q.reponses[i])).join(' · ')}</div>${q.explication ? `<p>${esc(q.explication)}</p>` : ''}<div class="taux"><b class="num">${tauxQ(R, n)} %</b> de bonnes réponses</div>`}</div></div></div>`;
+          `<div class="titre">BONNE RÉPONSE</div><div class="bonne">${q.bonnes.map(i => esc(q.reponses[i])).join(' · ')}</div>${q.explication ? `<p class="${q.explication.length > 380 ? 'tres-long' : q.explication.length > 200 ? 'long' : ''}">${esc(q.explication)}</p>` : ''}<div class="taux"><b class="num">${tauxQ(R, n)} %</b> de bonnes réponses</div>`}</div></div></div>`;
   } else if (st.phase === 'classement'){
     const top = st.players.slice(0, 5), maxS = Math.max(1, ...top.map(j => j.score));
     const avant = [...st.players].sort((a, b) => b.prev_score - a.prev_score), rangAvant = id => avant.findIndex(j => j.id === id) + 1;
@@ -1760,7 +1766,7 @@ document.addEventListener('input', e => {
   if (!F.edit) return;
   const q = F.edit.q.questions[F.edit.qi];
   if (a === 'titre-quiz') F.edit.q.titre = t.value;
-  if (a === 'champ-q'){ q[t.dataset.k] = t.dataset.num ? +t.value : t.value; if (t.tagName === 'SELECT') rendre(); else majListe(); }
+  if (a === 'champ-q'){ q[t.dataset.k] = t.dataset.num ? +t.value : t.value; const cc = $(`.compteur-car[data-pour="${t.dataset.k}"]`); if (cc) cc.textContent = `${t.value.length} / ${t.maxLength}`; if (t.tagName === 'SELECT') rendre(); else majListe(); }
   if (a === 'rep-q'){ q.reponses[+t.dataset.i] = t.value; majListe(); }
   aSauver();
 });
