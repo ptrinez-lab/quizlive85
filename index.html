@@ -514,6 +514,41 @@ body.editeur-large main{max-width:none}
 .menu-affichage .menu-liste{min-width:250px;right:0;left:auto}
 .menu-affichage .menu-liste button[aria-pressed="true"]{font-weight:800}
 @media (max-width:720px){.menu-affichage summary .lib{display:none}}
+/* ===== v1.5 ===== */
+/* Historique : filtres, sessions de test, menu */
+.filtres-histo{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 10px}
+.filtres-histo .puce{font-size:12.5px;padding:5px 10px;min-height:34px}
+.filtres-histo .puce .num{opacity:.65;font-weight:600}
+.histo li{display:flex;align-items:center;gap:6px}
+.histo li>button{flex:1;min-width:0}
+.histo .menu-plus summary.mini{padding:4px 8px;min-width:36px;min-height:36px;font-size:14px}
+.histo li.est-test{opacity:.78}
+.badge-test{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.08em;padding:1px 6px;border-radius:4px;background:#5b6478;color:#fff;vertical-align:2px}
+/* Bilan individuel du participant */
+.mes-erreurs{width:100%;text-align:left;margin:12px 0 4px;border:2px solid var(--ligne);border-radius:12px;background:var(--surface,#fff)}
+.mes-erreurs summary{cursor:pointer;padding:12px 14px;font-weight:800;min-height:44px;list-style-position:inside}
+.mes-erreurs ol{margin:0;padding:0 14px 12px 32px;display:grid;gap:12px;max-height:46vh;overflow:auto}
+.mes-erreurs li{font-size:14px;line-height:1.35}
+.mes-erreurs .q{font-weight:700;margin-bottom:3px}
+.mes-erreurs .ko{color:#b3261e}
+.mes-erreurs .ok{color:#1f7a45;font-weight:700}
+.mes-erreurs .exp{color:var(--texte-2);margin-top:3px}
+.mes-erreurs-ok{font-weight:800;color:#1f7a45}
+body.sombre .mes-erreurs .ko{color:#FF8A84}
+body.sombre .mes-erreurs .ok,body.sombre .mes-erreurs-ok{color:#6FD69A}
+/* Banque de questions et import */
+.deux-btn{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.deux-btn .btn{font-size:13px;padding:8px 6px}
+.banque{list-style:none;margin:10px 0 0;padding:0;max-height:52vh;overflow:auto;border:1px solid var(--ligne);border-radius:8px}
+.banque li{border-top:1px solid var(--ligne)}
+.banque li:first-child{border-top:0}
+.banque label{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;cursor:pointer}
+.banque input{width:20px;height:20px;flex:none;margin-top:2px}
+.banque label>span{display:flex;flex-direction:column;gap:2px}
+.modale .pied #banque-n{margin-right:auto;align-self:center}
+.rapport-import{margin:10px 0 0;padding-left:18px;font-size:13.5px;color:var(--texte-2)}
+.champ .rep-ligne input,.rep-ligne input{border:0!important;box-shadow:none!important;background:transparent!important}
+.modale #rech-banque{width:100%}
 
 /* =====================================================================
    CHARTE « LA LIGNE ROUGE » (module VSS · SDIS 85)
@@ -706,7 +741,7 @@ button.jeton:hover{background:var(--coral);color:#fff}
    ===================================================================== */
 :root{
   --ink:#0B193B; --paper:#F4F6FA; --muted:#4A5470;
-  --coral:#E52A21; --coral-l:#FCE4E2; --sun:#F8BD43; --sun-l:#FEF3DC; --mint:#269659; --mint-l:#E2F3E9; --lilac:#744E9A; --lilac-l:#EFE9F6;
+  --coral:#E2281F; /* rouge charte #E52A21 très légèrement assombri : contraste 4,6:1 avec le blanc (WCAG AA) */ --coral-l:#FCE4E2; --sun:#F8BD43; --sun-l:#FEF3DC; --mint:#269659; --mint-l:#E2F3E9; --lilac:#744E9A; --lilac-l:#EFE9F6;
   --bleu-2:#1A3B87;
   --degrade:linear-gradient(90deg,#E52A21 0%,#744E9A 55%,#1A3B87 100%);
   --display:'Mont','Montserrat','Century Gothic',system-ui,sans-serif;
@@ -787,6 +822,10 @@ body{background-color:var(--paper)}
 .logo-tel{text-transform:uppercase}
 .badge-pseudo{background:var(--ink)}
 .retour.neutre{background:var(--bleu-2)}
+/* Accessibilité (WCAG 2.1 AA) : contrastes des petits textes */
+.explic .titre{color:#1C6E41}
+.retour .info{opacity:1}
+body.sombre .explic .titre{color:#6FD69A}
 
 /* ===== Mode sombre (thèmes clairs « Ligne rouge » et « Charte SDIS 85 ») ===== */
 body.sombre{
@@ -801,7 +840,7 @@ body.sombre{
   --g-face:var(--surf); --g-ring:#E6EAF3; --g-tick:#E6EAF3; --g-centre:#E6EAF3; --g-sec:#E6EAF3;
   color-scheme:dark; color:var(--texte)
 }
-body.sombre .top,body.sombre .toast,body.sombre .tel,body.sombre .tel .encoche,body.sombre .badge-pseudo,body.sombre .lancement .sur,body.sombre .bandeau-info b{background:var(--fond-encre)}
+body.sombre .top,body.sombre .toast,body.sombre .tel,body.sombre .tel .encoche,body.sombre .badge-pseudo,body.sombre .lancement .sur{background:var(--fond-encre)}
 body.sombre .btn,body.sombre .btn.fant,body.sombre .panneau,body.sombre .tableau-garde,body.sombre .kpi,body.sombre .table-scroll,body.sombre .regie,body.sombre .modale,body.sombre .connexion .panneau,
 body.sombre .puce,body.sombre .recherche,body.sombre .champ input,body.sombre .champ select,body.sombre .champ textarea,body.sombre .modale textarea,body.sombre select.tri,
 body.sombre .liste-q li[aria-current="true"],body.sombre .segment,body.sombre .jeton,body.sombre .rang,body.sombre .chrono-tel,body.sombre .carte-rang,body.sombre .choix-profil button,body.sombre .lancement.charte,body.sombre .rep-ligne{background-color:var(--surf);color:var(--texte)}
@@ -821,7 +860,7 @@ body.sombre .connexion .marque,body.sombre .entete-page h2{color:var(--texte)}
 body.sombre .marque small{background:#fff;color:var(--coral)}
 body.sombre .rep.c2{color:#0B193B}
 body.sombre .etiquette,body.sombre .meta,body.sombre .sous{color:var(--texte-2)}
-body.sombre .apercu-img,body.sombre .media{background:#fff}
+body.sombre .apercu-img,body.sombre .media img,body.sombre .media>svg{background:#fff}
 
 :root{--filigrane:url(data:image/png;base64,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)}
 </style>
@@ -861,7 +900,7 @@ const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const LETTRES = ['A','B','C','D'];
 const TYPES = {qcm:'QCM à réponse unique', multi:'QCM à réponses multiples', vf:'Vrai / Faux', image:'Question avec image', sondage:'Sondage sans notation'};
-const APP_VERSION = '1.4';
+const APP_VERSION = '1.5';
 /* Thèmes : domaines d'intervention, spécialités (arrêté du 22 août 2019 modifié) et thèmes transverses */
 const GROUPES_THEMES = [
   ['Domaines', [['INC','Incendie'],['SSUAP','Secours et soins d’urgence aux personnes'],['SR','Secours routier'],['OD','Opérations diverses'],['AUTRES','Autres']]],
@@ -995,6 +1034,87 @@ function pointsReponse(q, ecouleMs, dureeMs, serie){
   const bonus = Math.min(100 * serie, 500);
   return {bonus, points: Math.round(1000 * (q.coef || 1) * (1 - ecouleMs / (2 * dureeMs))) + bonus};
 }
+/* ---------- Échange de quiz en CSV (Excel : « CSV UTF-8 ; séparateur point-virgule ») ---------- */
+const COLONNES_QUIZ = ['Type','Question','Réponse A','Réponse B','Réponse C','Réponse D','Bonne(s) réponse(s)','Durée (s)','Coefficient','Compétence','Explication'];
+const TYPES_CSV = {qcm:'QCM', multi:'QCM multiple', vf:'Vrai/Faux', image:'Image', sondage:'Sondage'};
+function quizVersCSV(qz){
+  const qc = v => `"${String(v ?? '').replace(/"/g,'""')}"`;
+  return [COLONNES_QUIZ.map(qc).join(';'), ...qz.questions.map(q => [TYPES_CSV[q.type] || 'QCM', q.texte, ...[0,1,2,3].map(i => q.reponses[i] || ''),
+    q.bonnes.map(i => LETTRES[i]).join(','), q.duree, q.type === 'sondage' ? '' : q.coef, q.competence, q.explication].map(qc).join(';'))].join('\r\n');
+}
+function lireCSV(txt){
+  txt = txt.replace(/^\uFEFF/, '');
+  const prem = txt.split(/\r?\n/)[0] || '', sep = [';', '\t', ','].sort((a, b) => prem.split(b).length - prem.split(a).length)[0];
+  const lignes = []; let l = [], c = '', g = false;
+  for (let i = 0; i < txt.length; i++){
+    const ch = txt[i];
+    if (g){ if (ch === '"'){ if (txt[i+1] === '"'){ c += '"'; i++; } else g = false; } else c += ch; }
+    else if (ch === '"') g = true;
+    else if (ch === sep){ l.push(c); c = ''; }
+    else if (ch === '\n' || ch === '\r'){ if (ch === '\r' && txt[i+1] === '\n') i++; l.push(c); lignes.push(l); l = []; c = ''; }
+    else c += ch;
+  }
+  if (c !== '' || l.length){ l.push(c); lignes.push(l); }
+  return lignes.filter(x => x.some(v => String(v).trim()));
+}
+function CSVversQuestions(txt){
+  const lignes = lireCSV(txt), erreurs = [], questions = [];
+  if (!lignes.length) return {questions, erreurs:['Fichier vide.']};
+  const norm = v => sansAccents(v).replace(/[^a-z0-9]/g, '');
+  const tete = lignes[0].map(norm), idx = n => tete.indexOf(norm(n));
+  if (idx('Question') < 0) return {questions, erreurs:['Colonne « Question » introuvable : partez du modèle à télécharger.']};
+  const typeDe = v => { const t = norm(v); return !t || t === 'qcm' || t === 'qcmunique' ? 'qcm' : t.includes('multi') ? 'multi' : t.startsWith('vrai') || t === 'vf' ? 'vf' : t.startsWith('sond') ? 'sondage' : t.startsWith('image') ? 'qcm' : null; };
+  lignes.slice(1).forEach((l, k) => {
+    const n = k + 2, v = c => { const i = idx(c); return i < 0 ? '' : String(l[i] ?? '').trim(); };
+    const type = typeDe(v('Type'));
+    if (!type) return erreurs.push(`Ligne ${n} : type « ${v('Type')} » inconnu (QCM, QCM multiple, Vrai/Faux, Sondage).`);
+    const texte = v('Question').slice(0, 200);
+    if (!texte) return erreurs.push(`Ligne ${n} : question vide, ligne ignorée.`);
+    let reponses = type === 'vf' ? ['Vrai','Faux'] : ['Réponse A','Réponse B','Réponse C','Réponse D'].map(v).filter(Boolean).map(x => x.slice(0, 80));
+    if (reponses.length < 2) return erreurs.push(`Ligne ${n} : il faut au moins 2 réponses.`);
+    const bonnes = [...new Set(v('Bonne(s) réponse(s)').toUpperCase().split(/[^A-D]+/).filter(Boolean).map(x => LETTRES.indexOf(x)))].filter(i => i >= 0 && i < reponses.length).sort();
+    if (type !== 'sondage' && !bonnes.length) erreurs.push(`Ligne ${n} : bonne réponse manquante (lettre A à D), question marquée « à compléter ».`);
+    const duree = [10,15,20,25,30,45,60,90].reduce((m, d) => Math.abs(d - (+v('Durée (s)') || 20)) < Math.abs(m - (+v('Durée (s)') || 20)) ? d : m, 20);
+    questions.push({type:type === 'qcm' && bonnes.length > 1 ? 'multi' : type, texte, reponses, bonnes:type === 'sondage' ? [] : type === 'multi' ? bonnes : bonnes.slice(0, 1),
+      duree, coef:type === 'sondage' ? 0 : Math.min(3, Math.max(1, Math.round(+v('Coefficient') || 1))), competence:v('Compétence').slice(0, 60), explication:v('Explication').slice(0, 600)});
+  });
+  return {questions, erreurs};
+}
+function modeleCSV(){ return quizVersCSV({questions:[
+  {type:'qcm', texte:'Quelle classe de feu correspond aux feux de métaux ?', reponses:['Classe A','Classe B','Classe D','Classe F'], bonnes:[2], duree:20, coef:1, competence:'Incendie', explication:'La classe D regroupe les feux de métaux.'},
+  {type:'multi', texte:'Quels éléments composent le triangle du feu ?', reponses:['Combustible','Comburant','Eau','Énergie d’activation'], bonnes:[0,1,3], duree:25, coef:2, competence:'Incendie', explication:''},
+  {type:'vf', texte:'Le 112 est gratuit depuis un mobile.', reponses:['Vrai','Faux'], bonnes:[0], duree:15, coef:1, competence:'Traitement de l’alerte', explication:''},
+  {type:'sondage', texte:'Ce format vous paraît-il utile ?', reponses:['Oui','Plutôt oui','Plutôt non','Non'], bonnes:[], duree:20, coef:0, competence:'Retour de formation', explication:''}]}); }
+async function importerFichier(fichier, cible){
+  const buf = await fichier.arrayBuffer();
+  let txt = new TextDecoder('utf-8').decode(buf);
+  if (txt.includes('\uFFFD')) txt = new TextDecoder('windows-1252').decode(buf);
+  if (/\.xlsx?$/i.test(fichier.name) || txt.startsWith('PK')) return toast('Fichier Excel : faites « Enregistrer sous » > « CSV UTF-8 (délimité par des points-virgules) », puis importez ce fichier.');
+  const {questions, erreurs} = CSVversQuestions(txt);
+  const rapport = erreurs.length ? `<ul class="rapport-import">${erreurs.slice(0, 12).map(x => `<li>${esc(x)}</li>`).join('')}${erreurs.length > 12 ? `<li>… et ${erreurs.length - 12} autre(s).</li>` : ''}</ul>` : '';
+  if (!questions.length) return modale(`<div class="balisage"></div><div class="corps"><h3>Import impossible</h3><p>Aucune question lisible dans « ${esc(fichier.name)} ».</p>${rapport}</div><div class="pied"><button class="btn rouge" data-act="fermer" autofocus>Fermer</button></div>`);
+  if (cible === 'edit' && F.edit){ F.edit.q.questions.push(...questions); F.edit.qi = F.edit.q.questions.length - questions.length; rendre(); aSauver(); }
+  else {
+    const qz = {titre:fichier.name.replace(/\.[^.]+$/, '').replace(/[_-]+/g, ' ').trim().slice(0, 120) || 'Quiz importé', theme:'AUTRES', service:lire('ql85_service') || '', questions};
+    try { const id = await api.saveQuiz(qz); await chargerBiblio(); ouvrirEditeur(F.quizzes.find(x => x.id === id) || Object.assign(qz, {id})); }
+    catch(e){ return toast(errMsg(e)); }
+  }
+  modale(`<div class="balisage"></div><div class="corps"><h3>Import terminé</h3><p><b>${questions.length}</b> question${questions.length > 1 ? 's' : ''} importée${questions.length > 1 ? 's' : ''}${cible === 'edit' ? ' à la fin de ce quiz' : ' dans un nouveau quiz'}. Vérifiez le thème et les questions marquées « à compléter ».</p>${rapport}</div><div class="pied"><button class="btn rouge" data-act="fermer" autofocus>Compris</button></div>`);
+}
+function modaleTexte(titre, aide, txt, nom){
+  modale(`<div class="balisage"></div><div class="corps"><h3>${esc(titre)}</h3><p class="etiquette" style="margin:0 0 12px">${esc(aide)}</p><textarea id="csv-txt" readonly aria-label="Contenu CSV">${esc(txt)}</textarea><p id="csv-msg" class="etiquette" role="status"></p></div>
+    <div class="pied"><button class="btn fant" data-act="fermer">Fermer</button><button class="btn" data-act="copier-csv">Copier</button><button class="btn or" data-act="dl-csv" data-nom="${esc(nom)}" autofocus>Télécharger</button></div>`);
+}
+function ouvrirBanque(){
+  const qs = F.quizzes.filter(qz => !F.edit || qz.id !== F.edit.q.id).flatMap(qz => qz.questions.map((q, i) => ({qz, q, i})));
+  if (!qs.length) return toast('La banque est vide : aucun autre quiz dans la bibliothèque.');
+  modale(`<div class="balisage"></div><div class="corps"><h3>Banque de questions</h3>
+    <p class="etiquette" style="margin:0 0 10px">${qs.length} questions issues de ${new Set(qs.map(x => x.qz.id)).size} quiz. Les questions cochées sont copiées : l’original n’est pas modifié.</p>
+    <input class="recherche" type="search" id="rech-banque" placeholder="Mot-clé : question, compétence, thème, service…" aria-label="Filtrer la banque" data-act="rech-banque">
+    <ul class="banque">${qs.map(({qz, q, i}) => `<li data-txt="${esc(sansAccents([q.texte, q.competence, ...(q.reponses || []), qz.titre, qz.service, themeDe(qz.theme), LIBELLES_THEMES[themeDe(qz.theme)]].join(' ')))}"><label>
+      <input type="checkbox" value="${qz.id}:${i}"><span><b>${esc(q.texte || 'Sans intitulé')}</b><span class="etiquette">${esc(TYPES[q.type] || '')}${q.competence ? ' · ' + esc(q.competence) : ''} · ${esc(themeDe(qz.theme))} · ${esc(qz.titre)}</span></span></label></li>`).join('')}</ul></div>
+    <div class="pied"><span class="etiquette" id="banque-n" role="status">0 sélectionnée</span><button class="btn fant" data-act="fermer">Annuler</button><button class="btn rouge" data-act="banque-ok">Ajouter au quiz</button></div>`);
+}
 function genererCSV(res){
   const qc = v => `"${String(v ?? '').replace(/"/g,'""')}"`;
   const lignes = [];
@@ -1029,6 +1149,8 @@ class SupaApi {
   hostState(sid, full){ return this.rpc('host_state', {p_session:sid, p_full:!!full}); }
   hostAction(sid, action, arg){ return this.rpc('host_action', {p_session:sid, p_action:action, p_arg:arg || null}); }
   listSessions(){ return this.rpc('list_sessions'); }
+  setSessionTest(sid, v){ return this.rpc('set_session_test', {p_session:sid, p_test:!!v}); }
+  deleteSession(sid){ return this.rpc('delete_session', {p_session:sid}); }
   sessionResults(sid){ return this.rpc('session_results', {p_session:sid}); }
   checkPin(pin){ return this.rpc('check_pin', {p_pin:pin}); }
   joinSession(pin, nick){ return this.rpc('join_session', {p_pin:pin, p_nickname:nick}); }
@@ -1152,8 +1274,10 @@ class DemoApi {
   listSessions(){
     return this.ok(this.db.sessions.slice().reverse().map(s => { const n = this.joueurs(s.id).length, last = this.dernier(s), nb = this.notees(s, last);
       const ok = this.db.answers.filter(a => a.session_id === s.id && a.correct).length;
-      return {id:s.id, pin:s.pin, titre:s.quiz.titre, phase:s.phase, created_at:s.created_at, players:n, taux: n * nb ? Math.round(100 * ok / (n * nb)) : null}; }));
+      return {id:s.id, pin:s.pin, titre:s.quiz.titre, phase:s.phase, created_at:s.created_at, players:n, mine:true, test:!!s.settings.test, taux: n * nb ? Math.round(100 * ok / (n * nb)) : null}; }));
   }
+  setSessionTest(sid, v){ this.sess(sid).settings.test = !!v; return this.ok(null); }
+  deleteSession(sid){ const ids = this.joueurs(sid).map(p => p.id); this.db.answers = this.db.answers.filter(a => a.session_id !== sid); this.db.players = this.db.players.filter(p => !ids.includes(p.id)); this.db.sessions = this.db.sessions.filter(x => x.id !== sid); return this.ok(null); }
   sessionResults(sid){
     const s = this.sess(sid), anon = !!s.settings.anonyme;
     return this.ok({id:s.id, pin:s.pin, phase:s.phase, created_at:s.created_at, settings:s.settings, titre:s.quiz.titre,
@@ -1196,7 +1320,9 @@ class DemoApi {
     if (comp){ const devant = this.joueurs(s.id).filter(x => x.score > p.score || (x.score === p.score && x.joined_at < p.joined_at));
       st.rank = devant.length + 1; const proche = devant.sort((a, b) => a.score - b.score || b.joined_at - a.joined_at)[0];
       st.ahead_nickname = proche ? proche.nickname : null; st.ahead_gap = proche ? proche.score - p.score : null; }
-    if (s.phase === 'podium'){ st.correct_count = this.db.answers.filter(a => a.player_id === p.id && a.correct).length; st.scored_count = this.notees(s, this.dernier(s)); }
+    if (s.phase === 'podium'){ st.correct_count = this.db.answers.filter(a => a.player_id === p.id && a.correct).length; st.scored_count = this.notees(s, this.dernier(s));
+      st.bilan = s.quiz.questions.slice(0, this.dernier(s) + 1).map((q, i) => { const a = this.db.answers.find(x => x.player_id === p.id && x.q_index === i);
+        return {i, type:q.type, texte:q.texte, reponses:q.reponses, bonnes:q.bonnes, explication:q.explication, competence:q.competence, choice:a ? a.choice : null, correct:a ? a.correct : null}; }); }
     return this.ok(st);
   }
   submitAnswer(c, qi, choix){
@@ -1373,8 +1499,9 @@ function vueBiblio(){
   return `
   <div class="entete-page">
     <div><h2>Bibliothèque des quiz</h2><div class="sous">${F.quizzes.length} quiz · ${F.quizzes.reduce((s,q) => s + q.questions.length, 0)} questions${concepteur() ? '' : ' · profil animateur : lancement des sessions uniquement'}</div></div>
-    ${concepteur() ? '<button class="btn rouge" data-act="nouveau">+ Nouveau quiz</button>' : ''}
+    ${concepteur() ? `<div class="actions-res"><button class="btn" data-act="importer" data-cible="nouveau">Importer un CSV</button><button class="btn fant" data-act="modele-csv">Modèle CSV</button><button class="btn rouge" data-act="nouveau">+ Nouveau quiz</button></div>` : ''}
   </div>
+  <input type="file" id="fichier-import" accept=".csv,.txt,text/csv" hidden data-act="fichier-import">
   <div class="grille-accueil">
     <section>
       <div class="filtres">
@@ -1396,15 +1523,24 @@ function vueBiblio(){
               <button class="btn rouge" data-act="lancer" data-id="${q.id}">Lancer</button>
               ${concepteur() ? `<button class="btn" data-act="modifier" data-id="${q.id}">Modifier</button>
               <details class="menu-plus"><summary class="btn fant" aria-label="Autres actions pour ${esc(q.titre)}">⋯</summary>
-                <div class="menu-liste"><button data-act="dupliquer" data-id="${q.id}">Dupliquer</button><button data-act="supprimer" data-id="${q.id}">Supprimer…</button></div></details>` : ''}
+                <div class="menu-liste"><button data-act="dupliquer" data-id="${q.id}">Dupliquer</button><button data-act="exporter-quiz" data-id="${q.id}">Exporter en CSV</button><button data-act="supprimer" data-id="${q.id}">Supprimer…</button></div></details>` : ''}
             </div></div>`; }).join('') : `<div class="vide">${F.quizzes.length ? 'Aucun quiz ne correspond.' : (concepteur() ? 'Aucun quiz pour l’instant : créez le premier, ou <button class="lien" data-act="ajouter-exemples">ajoutez les quiz d’exemple</button>.' : 'Aucun quiz pour l’instant : les concepteurs du GFOr les publieront ici.')}</div>`}
       </div>
     </section>
     <aside>
       <div class="panneau"><h3>Historique des sessions</h3>
-        ${F.sessions.length ? `<ul class="histo">${F.sessions.slice(0, 12).map(s => `<li><button data-act="voir-res" data-id="${s.id}">
-          <span><b>${esc(s.titre)}</b></span><span class="taux num">${s.taux == null ? '—' : s.taux + ' %'}</span>
-          <span class="d">${new Date(s.created_at).toLocaleDateString('fr-FR', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'})} · ${s.players} participants${s.phase !== 'podium' ? ' · inachevée' : ''}${s.anime_par && !s.mine ? ' · ' + esc(s.anime_par.split('@')[0]) : ''}</span></button></li>`).join('')}</ul>`
+        ${F.sessions.length ? (() => { const fh = F.filtreHisto || 'formations';
+          const garde = F.sessions.filter(s => fh === 'toutes' || (fh === 'tests' ? s.test : !s.test && (fh === 'formations' || (fh === 'terminees' ? s.phase === 'podium' : s.phase !== 'podium'))));
+          const cpt = k => F.sessions.filter(s => k === 'tests' ? s.test : !s.test && (k === 'formations' || (k === 'terminees' ? s.phase === 'podium' : s.phase !== 'podium'))).length;
+          return `<div class="filtres-histo" role="group" aria-label="Filtrer l’historique">${[['formations','Formations'],['terminees','Terminées'],['inachevees','Inachevées'],['tests','Tests'],['toutes','Toutes']].map(([k, l]) =>
+            `<button class="puce" data-act="f-histo" data-v="${k}" aria-pressed="${fh === k}">${l}${k !== 'toutes' ? ` <span class="num">${cpt(k)}</span>` : ''}</button>`).join('')}</div>
+          ${garde.length ? `<ul class="histo">${garde.slice(0, 30).map(s => { const droit = s.mine || concepteur(); return `<li class="${s.test ? 'est-test' : ''}"><button data-act="voir-res" data-id="${s.id}">
+          <span><b>${esc(s.titre)}</b>${s.test ? ' <span class="badge-test">TEST</span>' : ''}</span><span class="taux num">${s.taux == null ? '—' : s.taux + ' %'}</span>
+          <span class="d">${new Date(s.created_at).toLocaleDateString('fr-FR', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'})} · ${s.players} participants${s.phase !== 'podium' ? ' · inachevée' : ''}${s.anime_par && !s.mine ? ' · ' + esc(s.anime_par.split('@')[0]) : ''}</span></button>
+          ${droit ? `<details class="menu-plus"><summary class="btn fant mini" aria-label="Actions pour la session ${esc(s.titre)} du ${new Date(s.created_at).toLocaleDateString('fr-FR')}">⋯</summary><div class="menu-liste">
+            <button data-act="session-test" data-id="${s.id}" data-v="${!s.test}">${s.test ? 'Ce n’est pas un test' : 'Marquer comme test'}</button>
+            <button data-act="supprimer" data-type="session" data-id="${s.id}" data-titre="${esc(s.titre)}">Supprimer…</button></div></details>` : ''}</li>`; }).join('')}</ul>`
+          : '<p class="etiquette" style="margin:0">Aucune session dans ce filtre.</p>'}`; })()
           : '<p class="etiquette" style="margin:0">Les sessions jouées apparaîtront ici avec leur taux de réussite.</p>'}
       </div>
     </aside>
@@ -1444,6 +1580,9 @@ function vueEditeur(){
         </li>`).join('')}
       </ol>
       <button class="btn" style="width:100%;margin-top:10px" data-act="ajouter-q">+ Ajouter une question</button>
+      <button class="btn fant" style="width:100%;margin-top:8px" data-act="banque">Piocher dans la banque de questions</button>
+      <div class="deux-btn"><button class="btn fant" data-act="importer" data-cible="edit">Importer un CSV</button><button class="btn fant" data-act="exporter-quiz" data-id="">Exporter en CSV</button></div>
+      <input type="file" id="fichier-import" accept=".csv,.txt,text/csv" hidden data-act="fichier-import">
     </aside>
     <section class="panneau">
       ${F.listeRepliee ? `<div class="nav-q"><button class="btn fant" data-act="replier-liste" aria-expanded="false">⇥ Afficher la liste</button>
@@ -1473,7 +1612,8 @@ function formulaireQuestion(q){
     <div class="trio">
       <div class="champ"><label for="duree-q">Durée</label><select id="duree-q" data-act="champ-q" data-k="duree" data-num="1">${[10,15,20,25,30,45,60,90].map(d => `<option value="${d}" ${d === q.duree ? 'selected' : ''}>${d} secondes</option>`).join('')}</select></div>
       <div class="champ"><label for="coef-q">Coefficient de points</label><select id="coef-q" data-act="champ-q" data-k="coef" data-num="1" ${q.type === 'sondage' ? 'disabled' : ''}>${[1,2,3].map(c => `<option value="${c}" ${c === q.coef ? 'selected' : ''}>× ${c}${['',' (standard)',' (difficile)',' (expert)'][c]}</option>`).join('')}</select></div>
-      <div class="champ"><label for="comp-q">Compétence</label><input id="comp-q" maxlength="60" value="${esc(q.competence)}" data-act="champ-q" data-k="competence"></div>
+      <div class="champ"><label for="comp-q">Compétence</label><input id="comp-q" maxlength="60" value="${esc(q.competence)}" data-act="champ-q" data-k="competence" list="liste-comp" placeholder="Ex. Incendie, Traitement de l’alerte…">
+        <datalist id="liste-comp">${[...new Set([...F.quizzes, ...(F.edit ? [F.edit.q] : [])].flatMap(x => x.questions.map(y => (y.competence || '').trim())).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'fr')).map(v => `<option value="${esc(v)}">`).join('')}</datalist></div>
     </div>
     <div class="champ"><label for="exp-q">Explication pédagogique (affichée après la réponse)</label><textarea id="exp-q" data-act="champ-q" data-k="explication" maxlength="600">${esc(q.explication)}</textarea><span class="etiquette compteur-car" data-pour="explication">${(q.explication || '').length} / 600</span></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-act="dupliquer-q">Dupliquer la question</button><button class="btn fant" data-act="supprimer-q">Supprimer la question</button></div>`;
@@ -1702,8 +1842,8 @@ function vueResultats(){
   const aRevoir = notes.filter(h => tauxQ(h, n) < 50).sort((a, b) => tauxQ(a, n) - tauxQ(b, n));
   return `
   <div class="entete-page">
-    <div><h2>Résultats</h2><div class="sous">${esc(R.titre)} · ${new Date(R.created_at).toLocaleString('fr-FR', {dateStyle:'medium', timeStyle:'short'})} · PIN ${R.pin} · ${R.settings.bareme === 'formatif' ? 'barème formatif' : 'barème rapidité'}${R.settings.anonyme ? ' · session anonyme' : ''}${R.phase !== 'podium' ? ' · session inachevée' : ''}</div></div>
-    <div class="actions-res"><button class="btn" data-act="imprimer">Imprimer / PDF</button><button class="btn or" data-act="csv">Exporter en CSV</button></div>
+    <div><h2>Résultats</h2><div class="sous">${esc(R.titre)} · ${new Date(R.created_at).toLocaleString('fr-FR', {dateStyle:'medium', timeStyle:'short'})} · PIN ${R.pin} · ${R.settings.bareme === 'formatif' ? 'barème formatif' : 'barème rapidité'}${R.settings.anonyme ? ' · session anonyme' : ''}${R.phase !== 'podium' ? ' · session inachevée' : ''}${R.settings.test ? ' · <span class="badge-test">TEST</span>' : ''}</div></div>
+    <div class="actions-res">${(F.sessions.find(x => x.id === R.id) || {}).mine || concepteur() ? `<button class="btn fant" data-act="session-test" data-id="${R.id}" data-v="${!R.settings.test}">${R.settings.test ? 'Ce n’est pas un test' : 'Marquer comme test'}</button>` : ''}<button class="btn" data-act="imprimer">Imprimer / PDF</button><button class="btn or" data-act="csv">Exporter en CSV</button></div>
   </div>
   <div class="kpis">
     <div class="kpi"><b class="num">${n}</b><span>participants</span></div>
@@ -1713,6 +1853,10 @@ function vueResultats(){
   </div>
   ${aRevoir.length ? `<div class="panneau a-revoir"><h3>À retravailler en priorité</h3><ol>${aRevoir.map(h => { const e = erreur(h), q = R.questions[h.q_index];
       return `<li><b>Q${h.q_index + 1} · ${tauxQ(h, n)} %</b> ${esc(q.texte)}${e && e.dominant ? `<br><span class="etiquette">La réponse ${LETTRES[e.k]} « ${esc(q.reponses[e.k])} » a été plus choisie que la bonne réponse : vérifiez la formulation ou la réponse cochée comme juste.</span>` : ''}</li>`; }).join('')}</ol></div>` : ''}
+  ${(() => { const g = {}; notes.forEach(h => { const c = (R.questions[h.q_index].competence || '').trim() || 'Sans compétence'; (g[c] = g[c] || []).push(h); });
+    const l = Object.entries(g).map(([c, hs]) => ({c, n:hs.length, t:Math.round(hs.reduce((s, h) => s + tauxQ(h, n), 0) / hs.length)})).sort((a, b) => a.t - b.t);
+    return l.length > 1 ? `<h3 class="sec-titre">Par compétence</h3><div class="table-scroll" style="margin-bottom:26px"><table><thead><tr><th>Compétence</th><th>Questions</th><th>Réussite moyenne</th></tr></thead><tbody>
+      ${l.map(x => `<tr><td>${esc(x.c)}${x.t < 50 ? '<span class="alerte-q">À RETRAVAILLER</span>' : ''}</td><td class="num">${x.n}</td><td><div style="display:flex;align-items:center;gap:8px"><div class="jauge"><i style="width:${x.t}%;background:${x.t >= 70 ? 'var(--ok)' : x.t >= 50 ? 'var(--or)' : 'var(--ko)'}"></i></div><b class="num">${x.t} %</b></div></td></tr>`).join('')}</tbody></table></div>` : ''; })()}
   <div class="titre-section"><h3 class="sec-titre">Par question</h3><div class="segment" role="group" aria-label="Ordre des questions">
     <button data-act="res-tri" data-v="quiz" aria-pressed="${F.resTri !== 'reussite'}">Ordre du quiz</button><button data-act="res-tri" data-v="reussite" aria-pressed="${F.resTri === 'reussite'}">Moins réussies d’abord</button></div></div>
   <div class="table-scroll" style="margin-bottom:26px"><table>
@@ -1740,9 +1884,11 @@ function fermerModale(){ $('#modale-racine').innerHTML = ''; }
 function modaleParametres(id){
   const q = F.quizzes.find(x => x.id === id) || (F.edit && F.edit.q.id === id ? F.edit.q : null);
   if (!q) return toast('Quiz introuvable : rechargez la bibliothèque.');
+  sessionReglages.test = false;
   const seg = (k, opts) => `<div class="segment" role="group">${opts.map(([v,l]) => `<button data-act="sp" data-k="${k}" data-v="${v}" aria-pressed="${sessionReglages[k] === v}">${l}</button>`).join('')}</div>`;
   modale(`<div class="balisage"></div><div class="corps">
     <h3>Paramètres de session</h3><p class="etiquette" style="margin:0 0 18px">${esc(q.titre)} · ${q.questions.length} questions</p>
+    <div class="champ"><span class="lab">Type de session</span>${seg('test', [[false,'Formation'],[true,'Test (essai, hors bilans)']])}</div>
     <div class="champ"><span class="lab">Barème</span>${seg('bareme', [['rapide','Rapidité + justesse'],['formatif','Justesse seule (formatif)']])}
       <span class="etiquette">${sessionReglages.bareme === 'formatif' ? 'Formatif : 1 000 points × coefficient par bonne réponse, sans bonus de vitesse ni de série.' : 'Rapidité : de 500 à 1 000 points × coefficient selon la vitesse, plus un bonus de série.'}</span></div>
     <div class="champ"><span class="lab">Classement</span>${seg('competition', [[true,'Affiché'],[false,'Masqué']])}</div>
@@ -1754,6 +1900,18 @@ function modaleParametres(id){
 }
 
 /* ================= Participant ================= */
+function mesErreurs(bilan){
+  if (!Array.isArray(bilan)) return '';
+  const notees = bilan.filter(b => b.type !== 'sondage'), err = notees.filter(b => b.correct !== true);
+  if (!notees.length) return '';
+  if (!err.length) return `<p class="mes-erreurs-ok">Aucune erreur : bravo !</p>`;
+  const lib = (b, l) => (l || []).map(k => `${LETTRES[k]} · ${esc(b.reponses[k])}`).join(' + ');
+  return `<details class="mes-erreurs"><summary>Revoir mes erreurs (${err.length})</summary><ol>${err.map(b => `<li>
+    <div class="q">Q${b.i + 1} · ${esc(b.texte)}</div>
+    <div class="ko">${b.choice && b.choice.length ? 'Votre réponse : ' + lib(b, b.choice) : 'Pas de réponse'}</div>
+    <div class="ok">Bonne réponse : ${lib(b, b.bonnes)}</div>
+    ${b.explication ? `<div class="exp">${esc(b.explication)}</div>` : ''}</li>`).join('')}</ol></details>`;
+}
 class Joueur {
   constructor({pin = '', integre = false} = {}){
     this.integre = integre; this.pin = pin; this.hote = null; this.st = null; this.err = ''; this.key = ''; this.sel = []; this.horsLigne = false; this.t = null; this.unsub = null;
@@ -1762,7 +1920,7 @@ class Joueur {
     this.etape = this.cred ? 'jeu' : 'pin';
     if (this.cred) this.demarrer();
   }
-  monter(hote){ this.hote = hote; this.key = ''; this.rendre(); }
+  monter(hote){ this.hote = hote; hote.setAttribute('aria-live', 'polite'); this.key = ''; this.rendre(); }
   arreter(){ clearTimeout(this.t); if (this.unsub) this.unsub(); this.unsub = null; }
   async validerPin(v){
     v = String(v || '').replace(/\D/g, ''); this.pin = v;
@@ -1885,7 +2043,7 @@ class Joueur {
           <p style="margin:10px 0 0">${st.ahead_nickname ? `À <b class="num">${fmt(st.ahead_gap)}</b> pts de <b>${esc(st.ahead_nickname)}</b>` : '<b>Vous menez la course !</b>'}</p></div></div>`;
       } else if (vue === 'podium'){
         h = entete + `<div class="centre">${st.competition ? `<div class="carte-rang"><div class="petit">Classement final</div><div class="r num">${st.rank}<sup>${st.rank === 1 ? 'er' : 'e'}</sup></div><div class="petit">sur ${st.players} · ${fmt(st.score)} pts</div></div>` : ''}
-          <div class="carte-rang"><div class="petit">Bonnes réponses</div><div class="r num">${st.correct_count}<sup>/${st.scored_count}</sup></div></div><p class="petit">Merci pour votre participation !</p>
+          <div class="carte-rang"><div class="petit">Bonnes réponses</div><div class="r num">${st.correct_count}<sup>/${st.scored_count}</sup></div></div>${mesErreurs(st.bilan)}<p class="petit">Merci pour votre participation !</p>
           ${this.integre ? '' : `<button class="lien" data-act="j-quitter">Rejoindre une autre session</button>`}</div>`;
       }
       if (st && st.paused) h += `<div class="pause-voile" style="font-size:44px">Pause</div>`;
@@ -1926,8 +2084,21 @@ document.addEventListener('click', e => {
     case 'modifier': ouvrirEditeur(F.quizzes.find(x => x.id === b.dataset.id)); break;
     case 'dupliquer': { const src = F.quizzes.find(x => x.id === b.dataset.id); const c = clone(src); delete c.id; c.titre = src.titre + ' (copie)';
       api.saveQuiz(c).then(() => chargerBiblio()).catch(err => toast(errMsg(err))); break; }
-    case 'supprimer': { const q = F.quizzes.find(x => x.id === b.dataset.id);
+    case 'supprimer': if (b.dataset.type === 'session'){ const nb = (F.sessions.find(x => x.id === b.dataset.id) || {}).players || 0;
+        modale(`<div class="balisage"></div><div class="corps"><h3>Supprimer cette session ?</h3><p>La session « ${esc(b.dataset.titre)} », ses ${nb} participant${nb > 1 ? 's' : ''} et toutes leurs réponses seront supprimés définitivement. Le quiz lui-même est conservé.</p></div><div class="pied"><button class="btn fant" data-act="fermer" autofocus>Annuler</button><button class="btn rouge" data-act="supprimer-session-ok" data-id="${b.dataset.id}">Supprimer la session</button></div>`); break; }
+      { const q = F.quizzes.find(x => x.id === b.dataset.id);
       modale(`<div class="balisage"></div><div class="corps"><h3>Supprimer ce quiz ?</h3><p>« ${esc(q.titre)} » sera supprimé définitivement. Les résultats des sessions déjà jouées sont conservés.</p></div><div class="pied"><button class="btn fant" data-act="fermer" autofocus>Annuler</button><button class="btn rouge" data-act="supprimer-ok" data-id="${q.id}">Supprimer</button></div>`); break; }
+    case 'importer': F.cibleImport = b.dataset.cible; { const f = $('#fichier-import'); f.value = ''; f.click(); } break;
+    case 'modele-csv': modaleTexte('Modèle CSV', 'Une ligne par question. Type : QCM, QCM multiple, Vrai/Faux ou Sondage. Bonne(s) réponse(s) : lettres A à D, séparées par une virgule. Dans Excel, enregistrez au format « CSV UTF-8 ».', modeleCSV(), 'modele_quizlive85.csv'); break;
+    case 'exporter-quiz': { const qz = b.dataset.id ? F.quizzes.find(x => x.id === b.dataset.id) : F.edit && F.edit.q; if (!qz) break;
+      modaleTexte('Exporter le quiz', 'Format réimportable (les images ne sont pas exportées). S’ouvre dans Excel ; à partager avec d’autres concepteurs.', quizVersCSV(qz), 'quiz_' + sansAccents(qz.titre).replace(/[^a-z0-9]+/g, '_').slice(0, 40) + '.csv'); break; }
+    case 'banque': ouvrirBanque(); break;
+    case 'banque-ok': { const pris = [...document.querySelectorAll('.banque input:checked')].map(x => x.value.split(':')), src = [];
+      pris.forEach(([qid, i]) => { const qz = F.quizzes.find(x => x.id === qid); if (qz && qz.questions[+i]) src.push(clone(qz.questions[+i])); });
+      fermerModale(); if (src.length && F.edit){ F.edit.q.questions.push(...src); F.edit.qi = F.edit.q.questions.length - src.length; rendre(); aSauver(); toast(`${src.length} question${src.length > 1 ? 's ajoutées' : ' ajoutée'} à la fin du quiz.`); } break; }
+    case 'f-histo': F.filtreHisto = b.dataset.v; rendre(); break;
+    case 'session-test': api.setSessionTest(b.dataset.id, b.dataset.v === 'true').then(() => { if (F.res && F.res.id === b.dataset.id) F.res.settings.test = b.dataset.v === 'true'; toast(b.dataset.v === 'true' ? 'Session marquée comme test.' : 'Session remise dans les formations.'); chargerBiblio(); }).catch(err => toast(errMsg(err))); break;
+    case 'supprimer-session-ok': fermerModale(); api.deleteSession(b.dataset.id).then(() => { toast('Session supprimée.'); if (F.res && F.res.id === b.dataset.id) F.res = null; chargerBiblio(); }).catch(err => toast(errMsg(err))); break;
     case 'supprimer-ok': fermerModale(); api.deleteQuiz(b.dataset.id).then(() => { if (F.edit && F.edit.q.id === b.dataset.id) F.edit = null; chargerBiblio(); }).catch(err => toast(errMsg(err))); break;
     case 'ajouter-exemples': ajouterExemples().then(chargerBiblio).catch(err => toast(errMsg(err))); break;
     case 'profil-demo': api.role = b.dataset.r; F.role = b.dataset.r; if (!concepteur() && F.vue === 'editeur') F.vue = 'biblio'; rendre(); break;
@@ -1984,6 +2155,7 @@ document.addEventListener('click', e => { document.querySelectorAll('details.men
 document.addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelectorAll('details.menu-plus[open]').forEach(d => d.removeAttribute('open')); });
 document.addEventListener('input', e => {
   const t = e.target, a = t.dataset.act; if (!a) return;
+  if (a === 'rech-banque'){ const m = sansAccents(t.value).split(/\s+/).filter(Boolean); document.querySelectorAll('.banque li').forEach(li => { li.hidden = !m.every(x => li.dataset.txt.includes(x)); }); return; }
   if (a === 'recherche'){ F.recherche = t.value; const pos = t.selectionStart; rendre(); const n = $('#rech'); n.focus(); n.setSelectionRange(pos, pos); return; }
   if (!F.edit) return;
   const q = F.edit.q.questions[F.edit.qi];
@@ -1998,6 +2170,8 @@ document.addEventListener('change', e => {
   const t = e.target, a = t.dataset.act;
   if (a === 'f-service'){ F.service = t.value; rendre(); return; }
   if (a === 'f-tri'){ F.tri = t.value; rendre(); return; }
+  if (a === 'fichier-import'){ if (t.files && t.files[0]) importerFichier(t.files[0], F.cibleImport).catch(err => toast('Lecture impossible : ' + err.message)); return; }
+  if (t.closest && t.closest('.banque')){ const n = document.querySelectorAll('.banque input:checked').length, el = $('#banque-n'); if (el) el.textContent = `${n} sélectionnée${n > 1 ? 's' : ''}`; return; }
   if (!a || !F.edit) return;
   const q = F.edit.q.questions[F.edit.qi];
   if (a === 'theme-quiz'){ F.edit.q.theme = t.value; aSauver(); }
