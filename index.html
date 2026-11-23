@@ -431,6 +431,63 @@ body.calme .intro .eclair,body.calme .lancement::before{display:none}
   .intro .eclair,.lancement::before{display:none}
 }
 
+/* ===== v1.4 ===== */
+/* Réponses plus lisibles sur téléphone */
+.rep{font-size:19px;line-height:1.2}
+.rep.long{font-size:16px}
+@media (max-width:380px){.rep{font-size:17px}.rep.long{font-size:14.5px}}
+/* Interrupteurs : pictogramme + libellé, cibles 44 px */
+.bascule{min-height:44px}
+.bascule .ico{display:inline-flex;width:20px;height:20px}
+.bascule .ico svg{width:20px;height:20px}
+@media (max-width:720px){
+  .bascule{font-size:13px;gap:6px;padding:6px 10px;min-width:44px}
+  .bascule .lib,.bascule .pt{display:none}
+  .bascule[aria-pressed="false"] .ico{opacity:.55}
+}
+/* Bibliothèque : 3 colonnes, plus de troncature */
+.tg-tete,.ligne-quiz{grid-template-columns:8px minmax(0,1fr) auto}
+.ligne-quiz .actions{flex-wrap:nowrap;align-items:center}
+.ligne-quiz h3{overflow-wrap:anywhere}
+.etiquettes-quiz{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:4px}
+.service{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:4px;border:1px solid currentColor;opacity:.85;letter-spacing:.02em}
+select.tri{background:var(--champ);border:1px solid var(--ligne);border-radius:8px;padding:9px 10px;max-width:220px;color:inherit}
+.menu-plus{position:relative}
+.menu-plus summary{list-style:none;cursor:pointer;min-width:44px;text-align:center}
+.menu-plus summary::-webkit-details-marker{display:none}
+.menu-liste{position:absolute;right:0;top:calc(100% + 4px);z-index:20;background:#fff;color:#1e1b2e;border:2px solid #1e1b2e;border-radius:8px;box-shadow:4px 4px 0 rgba(0,0,0,.25);display:flex;flex-direction:column;min-width:160px;overflow:hidden}
+.menu-liste button{background:none;border:0;text-align:left;padding:12px 14px;font-weight:600;color:inherit;min-height:44px}
+.menu-liste button:hover,.menu-liste button:focus-visible{background:rgba(0,0,0,.07)}
+.menu-liste button[data-act="supprimer"]{color:#b3261e}
+@media (max-width:760px){
+  .ligne-quiz{grid-template-columns:6px minmax(0,1fr)}
+  .ligne-quiz .actions{flex-wrap:wrap}
+  .menu-liste{right:auto;left:0}
+  select.tri{max-width:none;flex:1}
+}
+/* Rapport de session */
+.titre-section{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.titre-section h3.sec-titre{margin:0}
+.titre-section .segment{flex:0 1 auto}
+.actions-res{display:flex;gap:8px;flex-wrap:wrap}
+.a-revoir{margin-bottom:22px;padding:16px 18px}
+.a-revoir h3{margin:0 0 8px}
+.a-revoir ol{margin:0;padding-left:20px;display:grid;gap:8px}
+.alerte-txt{color:#b3261e;font-weight:700}
+/* RGPD */
+.rgpd{margin-top:10px}
+.rgpd .lien{padding:0 2px;font-size:inherit}
+.rgpd-texte p{margin:0 0 9px;font-size:14px;line-height:1.45}
+/* Impression du rapport */
+@media print{
+  body{background:#fff!important;color:#000!important}
+  body::before,body::after,.top,.bandeau-info,.btn,.segment,.lien-formateur,.toast,.actions-res,.regie{display:none!important}
+  main{padding:0!important;max-width:none!important}
+  .panneau,table,th,td{background:#fff!important;color:#000!important;box-shadow:none!important}
+  tr{break-inside:avoid}
+  .alerte-q{color:#b3261e!important;border:1px solid #b3261e}
+}
+
 /* =====================================================================
    CHARTE « LA LIGNE ROUGE » (module VSS · SDIS 85)
    encre #1E1B2E · papier #F7F3EA · corail #F2545B · soleil #FFB547 · menthe #14A38B · lilas #7B6CF6
@@ -724,7 +781,17 @@ const CONFIG = {
   SUPABASE_ANON_KEY: 'sb_publishable_ARtKYcyCV3KuUdE005mqvw_88BE6nyl',   // la clé « anon public » (elle est faite pour être publique)
   ADRESSE_PUBLIQUE: 'https://ptrinez-lab.github.io/quizlive85/'     // facultatif, ex. 'https://quiz.sdis85.fr' (affichée et codée dans le QR code)
 };
-const CFG = Object.assign({}, CONFIG, window.QL85_CONFIG || {});
+const CFG = Object.assign({CONTACT_DPO:''}, CONFIG, window.QL85_CONFIG || {});
+/* Information des participants (RGPD). Texte à faire valider par le DPO ; modifiable ici. */
+const RGPD_COURT = 'Pseudo et réponses servent uniquement à l’animation de la formation. Pseudos effacés après 3 mois, résultats supprimés après 12 mois.';
+const rgpdDetail = () => `
+  <p><b>Responsable du traitement :</b> Service départemental d’incendie et de secours de la Vendée (SDIS 85).</p>
+  <p><b>Finalité :</b> animer des séquences de formation interactives et en mesurer les résultats pédagogiques.</p>
+  <p><b>Données traitées :</b> le pseudonyme que vous choisissez, vos réponses et leur horodatage. Aucun compte, nom ou adresse e-mail n’est demandé. N’utilisez pas votre nom complet comme pseudo.</p>
+  <p><b>Destinataires :</b> les formateurs du SDIS 85. Aucune donnée n’est transmise à des tiers à d’autres fins.</p>
+  <p><b>Hébergement :</b> base de données Supabase ; application publiée via GitHub Pages.</p>
+  <p><b>Durées de conservation :</b> votre pseudonyme est remplacé par « Participant n » après 3 mois ; la session et vos réponses sont supprimées après 12 mois.</p>
+  <p><b>Vos droits :</b> accès, rectification, effacement et opposition, auprès du délégué à la protection des données du SDIS 85${CFG.CONTACT_DPO ? ' : <b>' + esc(CFG.CONTACT_DPO) + '</b>' : ''}. Vous pouvez aussi saisir la CNIL.</p>`;
 
 /* ================= Utilitaires ================= */
 const $ = (s, r = document) => r.querySelector(s);
@@ -732,7 +799,7 @@ const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const LETTRES = ['A','B','C','D'];
 const TYPES = {qcm:'QCM à réponse unique', multi:'QCM à réponses multiples', vf:'Vrai / Faux', image:'Question avec image', sondage:'Sondage sans notation'};
-const APP_VERSION = '1.3';
+const APP_VERSION = '1.4';
 /* Thèmes : domaines d'intervention, spécialités (arrêté du 22 août 2019 modifié) et thèmes transverses */
 const GROUPES_THEMES = [
   ['Domaines', [['INC','Incendie'],['SSUAP','Secours et soins d’urgence aux personnes'],['SR','Secours routier'],['OD','Opérations diverses'],['AUTRES','Autres']]],
@@ -772,6 +839,12 @@ function toast(t){ const d = document.createElement('div'); d.className = 'toast
 function adresseJeu(){ if (!MODE_REEL_CFG) return 'https://quiz.sdis85.fr'; return (CFG.ADRESSE_PUBLIQUE || (location.origin + location.pathname)).replace(/\/$/, ''); }
 const MODE_REEL_CFG = !!(CFG.SUPABASE_URL && CFG.SUPABASE_ANON_KEY);
 
+const ICONES = {
+  son:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>',
+  sonOff:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg>',
+  anim:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.7L18.5 9l-4.7 1.8L12 15.5l-1.8-4.7L5.5 9l4.7-1.3z"/><path d="M18 15l.9 2.1L21 18l-2.1.9L18 21l-.9-2.1L15 18l2.1-.9z"/></svg>',
+  animOff:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.7L18.5 9l-4.7 1.8L12 15.5l-1.8-4.7L5.5 9l4.7-1.3z"/><path d="M3 3l18 18"/></svg>'
+};
 const ECU = `<svg class="ecu" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 2 36 8v12c0 9-7 15-16 18C11 35 4 29 4 20V8z" fill="var(--rouge)"/><path d="M11 15l9 6 9-6M11 22l9 6 9-6" fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round"/></svg>`;
 const IMAGES = {
   adr: `<svg viewBox="0 0 400 280" role="img" aria-label="Plaque orange de matière dangereuse : 33 en haut, 1203 en bas"><rect width="400" height="280" rx="18" fill="#2a3442"/><rect x="40" y="30" width="320" height="220" rx="10" fill="#F28C00" stroke="#111" stroke-width="12"/><line x1="40" y1="140" x2="360" y2="140" stroke="#111" stroke-width="10"/><text x="200" y="118" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="84" fill="#111">33</text><text x="200" y="228" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="84" fill="#111">1203</text></svg>`
@@ -882,7 +955,7 @@ class SupaApi {
   async signOut(){ await this.sb.auth.signOut(); }
   myProfile(){ return this.rpc('my_profile'); }
   listQuizzes(){ return this.rpc('list_quizzes'); }
-  saveQuiz(q){ return this.rpc('save_quiz', {p_id:q.id || null, p_titre:q.titre, p_theme:q.theme, p_questions:q.questions}); }
+  saveQuiz(q){ return this.rpc('save_quiz', {p_id:q.id || null, p_titre:q.titre, p_theme:q.theme, p_questions:q.questions, p_service:q.service || ''}); }
   deleteQuiz(id){ return this.rpc('delete_quiz', {p_id:id}); }
   createSession(quizId, settings){ return this.rpc('create_session', {p_quiz:quizId, p_settings:settings}); }
   hostState(sid, full){ return this.rpc('host_state', {p_session:sid, p_full:!!full}); }
@@ -970,7 +1043,7 @@ class DemoApi {
     if (this.role === 'animateur') return Promise.reject(new Error('droits_insuffisants'));
     let x = q.id && this.db.quizzes.find(z => z.id === q.id);
     if (!x){ x = {id:this.id()}; this.db.quizzes.push(x); }
-    Object.assign(x, {titre:(q.titre || '').trim() || 'Sans titre', theme:q.theme || 'AUTRES', questions:clone(q.questions), updated_at:new Date().toISOString()});
+    Object.assign(x, {titre:(q.titre || '').trim() || 'Sans titre', theme:q.theme || 'AUTRES', service:(q.service || '').trim().slice(0, 60), questions:clone(q.questions), updated_at:new Date().toISOString()});
     return this.ok(x.id);
   }
   deleteQuiz(id){ if (this.role === 'animateur') return Promise.reject(new Error('droits_insuffisants')); this.db.quizzes = this.db.quizzes.filter(q => q.id !== id); return this.ok(null); }
@@ -1072,7 +1145,7 @@ class DemoApi {
     const el = Math.max(0, Math.min(s.q_duration_ms, s.q_duration_ms - rem));
     const pickd = [...new Set(choix)].sort((a, b) => a - b);
     let ok = null, pts = 0, bonus = 0;
-    if (q.type !== 'sondage'){ ok = q.bonnes.length > 0 && memeEnsemble(pickd, q.bonnes); if (ok) ({points:pts, bonus} = pointsReponse(q, el, s.q_duration_ms, p.streak)); }
+    if (q.type !== 'sondage'){ ok = q.bonnes.length > 0 && memeEnsemble(pickd, q.bonnes); if (ok && s.settings.bareme === 'formatif') pts = Math.round(1000 * (q.coef || 1)); else if (ok) ({points:pts, bonus} = pointsReponse(q, el, s.q_duration_ms, p.streak)); }
     this.db.answers.push({session_id:s.id, player_id:p.id, q_index:qi, choice:pickd, elapsed_ms:el, correct:ok, points:pts, bonus});
     return this.ok({ok:true});
   }
@@ -1116,7 +1189,7 @@ const F = {
   vue:'biblio', user:null, quizzes:[], sessions:[], filtre:'Tous', recherche:'',
   edit:null, res:null, chargement:false, pleinEcran:false
 };
-let sessionReglages = Object.assign({competition:true, anonyme:false, questionTel:true}, lire('ql85_session') || {});
+let sessionReglages = Object.assign({bareme:'rapide', competition:true, anonyme:false, questionTel:true}, lire('ql85_session') || {});
 const L = {sid:null, pin:'', quiz:null, st:null, deadline:0, key:'', timer:null, unsub:null, fermeture:false, vueTel:'proj', qrNode:null, confettis:false, dernierN:0};
 let J = null; // participant actif (un seul à la fois)
 
@@ -1145,8 +1218,8 @@ function rendre(){
         ${[['biblio','Bibliothèque'],...(concepteur() ? [['editeur','Éditeur']] : []),['live','Session en direct'],['resultats','Résultats']].map(([v,l]) => `<button data-act="nav" data-vue="${v}" aria-current="${F.vue===v}">${l}</button>`).join('')}
       </nav>
       <div class="reglages">
-        <button class="bascule" data-act="regl" data-k="animations" aria-pressed="${reglages.animations}"><span class="pt"></span>Animations</button>
-        <button class="bascule" data-act="regl" data-k="sons" aria-pressed="${reglages.sons}"><span class="pt"></span>Sons</button>
+        <button class="bascule" data-act="regl" data-k="animations" aria-pressed="${reglages.animations}" aria-label="Animations ${reglages.animations ? 'activées' : 'désactivées'}" title="Animations"><span class="pt"></span><span class="ico" aria-hidden="true">${reglages.animations ? ICONES.anim : ICONES.animOff}</span><span class="lib">Animations</span></button>
+        <button class="bascule" data-act="regl" data-k="sons" aria-pressed="${reglages.sons}" aria-label="Sons ${reglages.sons ? 'activés' : 'désactivés'}" title="Sons"><span class="pt"></span><span class="ico" aria-hidden="true">${reglages.sons ? ICONES.son : ICONES.sonOff}</span><span class="lib">Sons</span></button>
         <span class="badge-role" title="${concepteur() ? 'Création et animation' : 'Animation uniquement'}">${concepteur() ? 'Concepteur' : 'Animateur'}</span>
         ${MODE_REEL ? `<span class="compte"><span>${esc(F.user.email || '')}</span><button class="btn fant" data-act="deconnexion" style="padding:6px 10px">Déconnexion</button></span>` : ''}
       </div>
@@ -1208,9 +1281,18 @@ async function chargerBiblio(){
   catch(e){ toast(errMsg(e)); if (/non_authentifie|JWT/i.test(String(e.message))) { F.user = null; } }
   if (F.vue === 'biblio' || !F.user) rendre();
 }
+const sansAccents = t => String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+function texteRecherche(q){ const th = themeDe(q.theme); return sansAccents([q.titre, q.service, th, LIBELLES_THEMES[th], q.auteur, ...q.questions.flatMap(x => [x.texte, x.competence, ...(x.reponses || [])])].join(' ')); }
 function vueBiblio(){
   const themes = ['Tous', ...new Set(F.quizzes.map(q => themeDe(q.theme)))];
-  const f = F.quizzes.filter(q => (F.filtre === 'Tous' || themeDe(q.theme) === F.filtre) && q.titre.toLowerCase().includes(F.recherche.toLowerCase()));
+  const services = [...new Set(F.quizzes.map(q => q.service).filter(Boolean))].sort();
+  const mots = sansAccents(F.recherche).split(/\s+/).filter(Boolean);
+  const f = F.quizzes.filter(q => (F.filtre === 'Tous' || themeDe(q.theme) === F.filtre) && (!F.service || q.service === F.service)
+    && (!mots.length || (t => mots.every(m => t.includes(m)))(texteRecherche(q))));
+  const tri = {recent:(a, b) => String(b.updated_at).localeCompare(String(a.updated_at)), titre:(a, b) => a.titre.localeCompare(b.titre, 'fr'),
+    service:(a, b) => (a.service || '~').localeCompare(b.service || '~', 'fr') || a.titre.localeCompare(b.titre, 'fr'),
+    theme:(a, b) => themeDe(a.theme).localeCompare(themeDe(b.theme)) || a.titre.localeCompare(b.titre, 'fr')}[F.tri || 'recent'];
+  f.sort(tri);
   return `
   <div class="entete-page">
     <div><h2>Bibliothèque des quiz</h2><div class="sous">${F.quizzes.length} quiz · ${F.quizzes.reduce((s,q) => s + q.questions.length, 0)} questions${concepteur() ? '' : ' · profil animateur : lancement des sessions uniquement'}</div></div>
@@ -1219,22 +1301,25 @@ function vueBiblio(){
   <div class="grille-accueil">
     <section>
       <div class="filtres">
-        <input class="recherche" id="rech" type="search" aria-label="Rechercher un quiz" placeholder="Rechercher un quiz…" value="${esc(F.recherche)}" data-act="recherche">
+        <input class="recherche" id="rech" type="search" aria-label="Rechercher par mot-clé" placeholder="Mot-clé : titre, service, thème, question…" value="${esc(F.recherche)}" data-act="recherche">
+        <select class="tri" aria-label="Filtrer par service" data-act="f-service"><option value="">Tous les services</option>${services.map(v => `<option ${v === F.service ? 'selected' : ''}>${esc(v)}</option>`).join('')}</select>
+        <select class="tri" aria-label="Trier" data-act="f-tri">${[['recent','Plus récents'],['titre','Titre A → Z'],['service','Service'],['theme','Thème']].map(([k, l]) => `<option value="${k}" ${k === (F.tri || 'recent') ? 'selected' : ''}>Tri : ${l}</option>`).join('')}</select>
+      </div>
+      <div class="filtres">
         ${themes.map(t => `<button class="puce" data-act="filtre" data-t="${esc(t)}" aria-pressed="${F.filtre === t}">${esc(t)}</button>`).join('')}
       </div>
       <div class="tableau-garde" role="list">
-        <div class="tg-tete" aria-hidden="true"><span></span><span>Quiz</span><span>Questions</span><span>Durée</span><span style="text-align:right">Actions</span></div>
+        <div class="tg-tete" aria-hidden="true"><span></span><span>Quiz${mots.length || F.service || F.filtre !== 'Tous' ? ` · ${f.length} résultat${f.length > 1 ? 's' : ''}` : ''}</span><span style="text-align:right">Actions</span></div>
         ${f.length ? f.map(q => {
           const duree = Math.max(1, Math.round(q.questions.reduce((s,x) => s + (x.duree || 20) + 12, 0) / 60)), th = themeDe(q.theme), coul = THEMES[th] || THEMES.AUTRES;
           return `<div class="ligne-quiz" role="listitem"><span class="tranche" style="background:${coul}"></span>
-            <div class="col"><span class="theme" style="background:${coul};color:${texteSur(coul)};border-color:${coul}" title="${esc(LIBELLES_THEMES[th] || th)}">${esc(th)}</span><h3>${esc(q.titre)}</h3>${q.auteur ? `<div class="meta">par ${esc(q.auteur.split('@')[0])}</div>` : ''}</div>
-            <div class="col meta num">${q.questions.length} questions</div>
-            <div class="col meta num">≈ ${duree} min</div>
+            <div class="col"><div class="etiquettes-quiz"><span class="theme" style="background:${coul};color:${texteSur(coul)};border-color:${coul}" title="${esc(LIBELLES_THEMES[th] || th)}">${esc(th)}</span>${q.service ? `<span class="service">${esc(q.service)}</span>` : ''}</div><h3>${esc(q.titre)}</h3>
+              <div class="meta num">${q.questions.length} questions · ≈ ${duree} min${q.auteur ? ` · par ${esc(q.auteur.split('@')[0])}` : ''}</div></div>
             <div class="col actions">
               <button class="btn rouge" data-act="lancer" data-id="${q.id}">Lancer</button>
               ${concepteur() ? `<button class="btn" data-act="modifier" data-id="${q.id}">Modifier</button>
-              <button class="btn fant" data-act="dupliquer" data-id="${q.id}">Dupliquer</button>
-              <button class="btn fant" data-act="supprimer" data-id="${q.id}" aria-label="Supprimer ${esc(q.titre)}">✕</button>` : ''}
+              <details class="menu-plus"><summary class="btn fant" aria-label="Autres actions pour ${esc(q.titre)}">⋯</summary>
+                <div class="menu-liste"><button data-act="dupliquer" data-id="${q.id}">Dupliquer</button><button data-act="supprimer" data-id="${q.id}">Supprimer…</button></div></details>` : ''}
             </div></div>`; }).join('') : `<div class="vide">${F.quizzes.length ? 'Aucun quiz ne correspond.' : (concepteur() ? 'Aucun quiz pour l’instant : créez le premier, ou <button class="lien" data-act="ajouter-exemples">ajoutez les quiz d’exemple</button>.' : 'Aucun quiz pour l’instant : les concepteurs du GFOr les publieront ici.')}</div>`}
       </div>
     </section>
@@ -1269,6 +1354,8 @@ function vueEditeur(){
   <div class="editeur">
     <aside class="panneau">
       <div class="champ"><label for="titre-quiz">Titre du quiz</label><input id="titre-quiz" maxlength="120" value="${esc(qz.titre)}" data-act="titre-quiz"></div>
+      <div class="champ"><label for="service-quiz">Service concepteur</label><input id="service-quiz" maxlength="60" list="liste-services" placeholder="Ex. GFOr, groupement Sud…" value="${esc(qz.service || '')}" data-act="service-quiz">
+        <datalist id="liste-services">${[...new Set(F.quizzes.map(x => x.service).filter(Boolean))].sort().map(v => `<option value="${esc(v)}">`).join('')}</datalist></div>
       <div class="champ"><label for="theme-quiz">Thème</label><select id="theme-quiz" data-act="theme-quiz">${GROUPES_THEMES.map(([g, l]) => `<optgroup label="${g}">${l.map(([k, lib]) => `<option value="${k}" ${k === themeDe(qz.theme) ? 'selected' : ''}>${k} · ${lib}</option>`).join('')}</optgroup>`).join('')}</select></div>
       <div class="etiquette" style="margin-bottom:8px">QUESTIONS</div>
       <ol class="liste-q">
@@ -1426,7 +1513,7 @@ function majRegie(){
   if (st.phase !== 'podium' && st.phase !== 'attente') cmd += `<button class="btn fant" data-act="terminer">Terminer</button>`;
   cmd += `<button class="btn fant" data-act="plein-ecran" title="Projection plein écran">${F.pleinEcran ? 'Quitter la projection' : 'Projeter'}</button>`;
   const html = `<div class="etat"><span class="voyant ${st.paused ? 'pause' : ''}"></span>${etq[st.phase]}</div>
-    <div class="compteurs"><span>PIN <b class="num">${L.pin}</b></span><span><b class="num">${n}</b> connecté${n > 1 ? 's' : ''}</span>${st.phase === 'question' ? `<span><b class="num">${st.answers_count}</b> / ${n} réponses</span>` : ''}<span>${comp ? 'Compétition' : 'Sans classement'}${st.settings.anonyme ? ' · anonyme' : ''}</span></div>
+    <div class="compteurs"><span>PIN <b class="num">${L.pin}</b></span><span><b class="num">${n}</b> connecté${n > 1 ? 's' : ''}</span>${st.phase === 'question' ? `<span><b class="num">${st.answers_count}</b> / ${n} réponses</span>` : ''}<span>${st.settings.bareme === 'formatif' ? 'Formatif' : 'Rapidité'} · ${comp ? 'classement affiché' : 'sans classement'}${st.settings.anonyme ? ' · anonyme' : ''}</span></div>
     <div class="cmd">${cmd}</div>`;
   if (html !== L.regieHtml){ L.regieHtml = html; r.innerHTML = html; }
 }
@@ -1516,10 +1603,17 @@ function vueResultats(){
   const pire = notes.length ? notes.reduce((a, b) => b.correct < a.correct ? b : a) : null;
   const taux = notes.length && n ? Math.round(notes.reduce((s, h) => s + h.correct, 0) / (notes.length * n) * 100) : 0;
   const moy = R.players.length ? Math.round(R.players.reduce((s, p) => s + p.score, 0) / R.players.length) : null;
+  // Erreur la plus fréquente par question : révèle un piège ou une formulation ambiguë
+  const erreur = h => { const q = R.questions[h.q_index]; if (!h.note) return null;
+    let k = -1; q.reponses.forEach((_, i) => { if (!q.bonnes.includes(i) && h.counts[i] > 0 && (k < 0 || h.counts[i] > h.counts[k])) k = i; });
+    return k < 0 ? null : {k, n:h.counts[k], dominant:h.counts[k] > h.correct}; };
+  const lignes = [...R.history];
+  if (F.resTri === 'reussite') lignes.sort((a, b) => (a.note ? tauxQ(a, n) : 999) - (b.note ? tauxQ(b, n) : 999));
+  const aRevoir = notes.filter(h => tauxQ(h, n) < 50).sort((a, b) => tauxQ(a, n) - tauxQ(b, n));
   return `
   <div class="entete-page">
-    <div><h2>Résultats</h2><div class="sous">${esc(R.titre)} · ${new Date(R.created_at).toLocaleString('fr-FR', {dateStyle:'medium', timeStyle:'short'})} · PIN ${R.pin}${R.settings.anonyme ? ' · session anonyme' : ''}${R.phase !== 'podium' ? ' · session inachevée' : ''}</div></div>
-    <button class="btn or" data-act="csv">Exporter en CSV</button>
+    <div><h2>Résultats</h2><div class="sous">${esc(R.titre)} · ${new Date(R.created_at).toLocaleString('fr-FR', {dateStyle:'medium', timeStyle:'short'})} · PIN ${R.pin} · ${R.settings.bareme === 'formatif' ? 'barème formatif' : 'barème rapidité'}${R.settings.anonyme ? ' · session anonyme' : ''}${R.phase !== 'podium' ? ' · session inachevée' : ''}</div></div>
+    <div class="actions-res"><button class="btn" data-act="imprimer">Imprimer / PDF</button><button class="btn or" data-act="csv">Exporter en CSV</button></div>
   </div>
   <div class="kpis">
     <div class="kpi"><b class="num">${n}</b><span>participants</span></div>
@@ -1527,13 +1621,17 @@ function vueResultats(){
     <div class="kpi"><b class="num">${moy == null ? '—' : fmt(moy)}</b><span>points en moyenne</span></div>
     <div class="kpi"><b>${pire ? 'Q' + (pire.q_index + 1) : '—'}</b><span>question la moins réussie</span></div>
   </div>
-  <h3 class="sec-titre">Par question</h3>
+  ${aRevoir.length ? `<div class="panneau a-revoir"><h3>À retravailler en priorité</h3><ol>${aRevoir.map(h => { const e = erreur(h), q = R.questions[h.q_index];
+      return `<li><b>Q${h.q_index + 1} · ${tauxQ(h, n)} %</b> ${esc(q.texte)}${e && e.dominant ? `<br><span class="etiquette">La réponse ${LETTRES[e.k]} « ${esc(q.reponses[e.k])} » a été plus choisie que la bonne réponse : vérifiez la formulation ou la réponse cochée comme juste.</span>` : ''}</li>`; }).join('')}</ol></div>` : ''}
+  <div class="titre-section"><h3 class="sec-titre">Par question</h3><div class="segment" role="group" aria-label="Ordre des questions">
+    <button data-act="res-tri" data-v="quiz" aria-pressed="${F.resTri !== 'reussite'}">Ordre du quiz</button><button data-act="res-tri" data-v="reussite" aria-pressed="${F.resTri === 'reussite'}">Moins réussies d’abord</button></div></div>
   <div class="table-scroll" style="margin-bottom:26px"><table>
-    <thead><tr><th>#</th><th>Question</th><th>Compétence</th><th>Réponses</th><th>Réussite</th><th>Temps moyen</th></tr></thead>
-    <tbody>${R.history.map(h => { const q = R.questions[h.q_index], t = tauxQ(h, n); return `<tr>
-      <td class="num">${h.q_index + 1}</td><td>${esc(q.texte)}${pire && h === pire ? '<span class="alerte-q">À RETRAVAILLER</span>' : ''}</td><td>${esc(q.competence)}</td><td class="num">${h.repondants}/${n}</td>
+    <thead><tr><th>#</th><th>Question</th><th>Compétence</th><th>Réponses</th><th>Réussite</th><th>Erreur la plus fréquente</th><th>Temps moyen</th></tr></thead>
+    <tbody>${lignes.map(h => { const q = R.questions[h.q_index], t = tauxQ(h, n), e = erreur(h); return `<tr>
+      <td class="num">${h.q_index + 1}</td><td>${esc(q.texte)}${h.note && t < 50 ? '<span class="alerte-q">À RETRAVAILLER</span>' : ''}</td><td>${esc(q.competence)}</td><td class="num">${h.repondants}/${n}</td>
       <td>${h.note ? `<div style="display:flex;align-items:center;gap:8px"><div class="jauge"><i style="width:${t}%;background:${t < 50 ? 'var(--ko)' : t < 70 ? 'var(--or)' : 'var(--ok)'}"></i></div><b class="num">${t} %</b></div>` : '<span class="etiquette">sondage</span>'}</td>
-      <td class="num">${(h.avg_ms / 1000).toFixed(1)} s</td></tr>`; }).join('') || '<tr><td colspan="6">Aucune question jouée.</td></tr>'}</tbody></table></div>
+      <td>${e ? `<span class="${e.dominant ? 'alerte-txt' : ''}">${LETTRES[e.k]} · ${esc(q.reponses[e.k])} <span class="etiquette">(${e.n})</span></span>` : '<span class="etiquette">—</span>'}</td>
+      <td class="num">${(h.avg_ms / 1000).toFixed(1)} s</td></tr>`; }).join('') || '<tr><td colspan="7">Aucune question jouée.</td></tr>'}</tbody></table></div>
   ${R.settings.anonyme ? '<div class="vide">Session anonyme : aucun résultat individuel n’est affiché ni exporté.</div>' : `
   <h3 class="sec-titre">Par participant</h3>
   <div class="table-scroll"><table>
@@ -1555,7 +1653,9 @@ function modaleParametres(id){
   const seg = (k, opts) => `<div class="segment" role="group">${opts.map(([v,l]) => `<button data-act="sp" data-k="${k}" data-v="${v}" aria-pressed="${sessionReglages[k] === v}">${l}</button>`).join('')}</div>`;
   modale(`<div class="balisage"></div><div class="corps">
     <h3>Paramètres de session</h3><p class="etiquette" style="margin:0 0 18px">${esc(q.titre)} · ${q.questions.length} questions</p>
-    <div class="champ"><span class="lab">Mode de jeu</span>${seg('competition', [[true,'Avec classement'],[false,'Sans compétition']])}</div>
+    <div class="champ"><span class="lab">Barème</span>${seg('bareme', [['rapide','Rapidité + justesse'],['formatif','Justesse seule (formatif)']])}
+      <span class="etiquette">${sessionReglages.bareme === 'formatif' ? 'Formatif : 1 000 points × coefficient par bonne réponse, sans bonus de vitesse ni de série.' : 'Rapidité : de 500 à 1 000 points × coefficient selon la vitesse, plus un bonus de série.'}</span></div>
+    <div class="champ"><span class="lab">Classement</span>${seg('competition', [[true,'Affiché'],[false,'Masqué']])}</div>
     <div class="champ"><span class="lab">Identité des participants</span>${seg('anonyme', [[false,'Pseudo libre'],[true,'Totalement anonyme']])}</div>
     <div class="champ"><span class="lab">Énoncé sur les téléphones</span>${seg('questionTel', [[true,'Affiché'],[false,'Écran projeté seul']])}</div>
     </div><div class="pied"><button class="btn fant" data-act="fermer">Annuler</button><button class="btn rouge" data-act="ouvrir-salle" data-id="${id}" autofocus>Ouvrir la salle d’attente</button></div>`);
@@ -1658,7 +1758,7 @@ class Joueur {
         ${this.integre ? `<button class="lien" data-act="j-qr">J’ai scanné le QR code</button>` : ''}</div>`;
     } else if (this.etape === 'pseudo'){
       h = this.anonyme ? `<div class="centre"><div class="petit">${esc(this.titre || '')}</div><div class="logo-tel" style="font-size:30px">Session anonyme</div>
-          <p class="petit">Un pseudonyme vous sera attribué. Aucune donnée personnelle n’est demandée.</p>
+          <p class="petit">Un pseudonyme vous sera attribué. Aucune donnée personnelle n’est demandée.</p><p class="petit rgpd">${RGPD_COURT} <button class="lien" type="button" data-act="rgpd">En savoir plus</button></p>
           ${this.err ? `<div class="erreur" role="alert">${esc(this.err)}</div>` : ''}<button class="btn rouge gros" data-act="j-rejoindre">Rejoindre</button></div>`
       : `<div class="centre"><div class="petit">${esc(this.titre || '')}</div><div class="logo-tel" style="font-size:30px">Votre pseudo</div>
         <form id="f-pseudo" style="width:100%;display:flex;flex-direction:column;gap:12px">
@@ -1667,7 +1767,7 @@ class Joueur {
           ${this.err ? `<div class="erreur" role="alert">${esc(this.err)}</div>` : ''}
           <button class="lien" type="button" data-act="j-alea">Choisir un pseudo au hasard</button>
           <button class="btn rouge gros" type="submit">C’est parti</button></form>
-        <p class="petit">Aucun compte requis. Votre pseudo n’est utilisé que pour cette session de formation.</p></div>`;
+        <p class="petit rgpd">${RGPD_COURT} <button class="lien" type="button" data-act="rgpd">En savoir plus</button></p></div>`;
     } else {
       const st = this.st, vue = this.phaseVue(), q = st && st.question;
       const entete = st ? `<div class="entete-tel"><span><b>${esc(st.nickname)}</b></span><span class="num">${st.competition ? fmt(st.score) + ' pts' : ''}</span></div>` : '';
@@ -1679,14 +1779,14 @@ class Joueur {
         else h = entete + `${st.question_tel ? `<div class="q-tel">${esc(q.texte)}</div>` : `<div class="q-tel" style="font-size:15px;color:var(--texte-2)">Regardez l’écran projeté</div>`}
           <div class="chrono-tel"><i></i></div>
           ${this.err ? `<div class="erreur" role="alert" style="margin-bottom:8px">${esc(this.err)}</div>` : ''}
-          <div class="grille-rep ${q.reponses.length === 2 ? 'deux' : ''}">${q.reponses.map((x,i) => `<button class="rep c${i}" data-act="j-rep" data-i="${i}" ${q.type === 'multi' ? `aria-pressed="${this.sel.includes(i)}"` : ''}><span class="l">${LETTRES[i]}</span><span>${esc(x)}</span></button>`).join('')}</div>
+          <div class="grille-rep ${q.reponses.length === 2 ? 'deux' : ''}">${q.reponses.map((x,i) => `<button class="rep c${i}${x.length > 45 ? ' long' : ''}" data-act="j-rep" data-i="${i}" ${q.type === 'multi' ? `aria-pressed="${this.sel.includes(i)}"` : ''}><span class="l">${LETTRES[i]}</span><span>${esc(x)}</span></button>`).join('')}</div>
           ${q.type === 'multi' ? `<button class="btn rouge valider" data-act="j-valider" ${this.sel.length ? '' : 'disabled'}>Valider ma sélection</button>` : ''}`;
       } else if (vue === 'revel' || (vue === 'classement' && !st.competition)){
         const r = st.result || {};
         const bonne = (r.bonnes || []).map(i => esc(q.reponses[i])).join(', ');
         if (q.type === 'sondage') h = entete + `<div class="centre"><div class="retour neutre"><div class="gros-mot">Merci !</div><div class="info">${r.repondu ? 'Votre avis est enregistré, sans points.' : 'Vous n’avez pas répondu à ce sondage.'}</div></div></div>`;
         else if (!r.repondu) h = entete + `<div class="centre"><div class="retour ko"><div class="gros-mot">Pas de réponse</div><div class="info">Bonne réponse : ${bonne}</div></div><p class="petit">${esc(r.explication || '')}</p></div>`;
-        else if (r.correct) h = entete + `<div class="centre"><div class="retour ok" id="retour-ok"><div class="gros-mot">Bonne réponse</div>${st.competition ? `<div class="pts num">+ ${fmt(r.points)}</div>` : ''}${st.streak >= 2 ? `<div class="info"><span class="flamme">Série de ${st.streak}${r.bonus ? ' · bonus +' + fmt(r.bonus) : ''}</span></div>` : ''}</div><p class="petit">${esc(r.explication || '')}</p></div>`;
+        else if (r.correct) h = entete + `<div class="centre"><div class="retour ok" id="retour-ok"><div class="gros-mot">Bonne réponse</div>${st.competition ? `<div class="pts num">+ ${fmt(r.points)}</div>` : ''}${st.streak >= 2 && r.bonus ? `<div class="info"><span class="flamme">Série de ${st.streak} · bonus +${fmt(r.bonus)}</span></div>` : ''}</div><p class="petit">${esc(r.explication || '')}</p></div>`;
         else h = entete + `<div class="centre"><div class="retour ko"><div class="gros-mot">Raté</div><div class="info">Bonne réponse : ${bonne}</div></div><p class="petit">${esc(r.explication || '')}</p></div>`;
       } else if (vue === 'classement'){
         h = entete + `<div class="centre"><div class="carte-rang"><div class="petit">Votre position</div><div class="r num">${st.rank}<sup>${st.rank === 1 ? 'er' : 'e'}</sup></div><div class="petit">sur ${st.players}</div>
@@ -1721,7 +1821,8 @@ document.addEventListener('click', e => {
     case 'filtre': F.filtre = b.dataset.t; rendre(); break;
     case 'lancer': modaleParametres(b.dataset.id); break;
     case 'lancer-edit': (async () => { await sauverQuiz(); if (F.edit.q.id) { if (F.edit.q.questions.some(incomplete)) toast('Attention : certaines questions sont à compléter.'); modaleParametres(F.edit.q.id); } })(); break;
-    case 'sp': sessionReglages[b.dataset.k] = b.dataset.v === 'true'; b.parentElement.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); break;
+    case 'sp': { const v = b.dataset.v; sessionReglages[b.dataset.k] = v === 'true' ? true : v === 'false' ? false : v; b.parentElement.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b));
+      if (b.dataset.k === 'bareme'){ const e = b.parentElement.nextElementSibling; if (e) e.textContent = v === 'formatif' ? 'Formatif : 1 000 points × coefficient par bonne réponse, sans bonus de vitesse ni de série.' : 'Rapidité : de 500 à 1 000 points × coefficient selon la vitesse, plus un bonus de série.'; } break; }
     case 'ouvrir-salle': fermerModale(); ouvrirSession(b.dataset.id); break;
     case 'fermer': fermerModale(); break;
     case 'fermer-fond': if (e.target === b) fermerModale(); break;
@@ -1733,7 +1834,8 @@ document.addEventListener('click', e => {
     case 'supprimer-ok': fermerModale(); api.deleteQuiz(b.dataset.id).then(() => { if (F.edit && F.edit.q.id === b.dataset.id) F.edit = null; chargerBiblio(); }).catch(err => toast(errMsg(err))); break;
     case 'ajouter-exemples': ajouterExemples().then(chargerBiblio).catch(err => toast(errMsg(err))); break;
     case 'profil-demo': api.role = b.dataset.r; F.role = b.dataset.r; if (!concepteur() && F.vue === 'editeur') F.vue = 'biblio'; rendre(); break;
-    case 'nouveau': ouvrirEditeur({titre:'Nouveau quiz', theme:'AUTRES', questions:[questionVide()]}); aSauver(); break;
+    case 'rgpd': modale(`<div class="balisage"></div><div class="corps rgpd-texte"><h3>Vos données</h3>${rgpdDetail()}</div><div class="pied"><button class="btn rouge" data-act="fermer" autofocus>J’ai compris</button></div>`); break;
+    case 'nouveau': ouvrirEditeur({titre:'Nouveau quiz', theme:'AUTRES', service:lire('ql85_service') || '', questions:[questionVide()]}); aSauver(); break;
     case 'choisir-q': if (e.target.closest('.ordre')) break; ed().qi = +b.dataset.i; rendre(); break;
     case 'monter': case 'descendre': { const arr = ed().q.questions, i = +b.dataset.i, j = a === 'monter' ? i - 1 : i + 1; if (j < 0 || j >= arr.length) break; [arr[i], arr[j]] = [arr[j], arr[i]]; ed().qi = j; rendre(); aSauver(); break; }
     case 'ajouter-q': ed().q.questions.push(questionVide()); ed().qi = ed().q.questions.length - 1; rendre(); aSauver(); { const t = $('#txt-q'); if (t) t.focus(); } break;
@@ -1752,6 +1854,8 @@ document.addEventListener('click', e => {
     case 'terminer-ok': fermerModale(); actionHote('podium'); break;
     case 'plein-ecran': F.pleinEcran = !F.pleinEcran; try { if (F.pleinEcran && document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => {}); else if (!F.pleinEcran && document.fullscreenElement) document.exitFullscreen().catch(() => {}); } catch(err){} rendre(); break;
     case 'voir-res': F.pleinEcran = false; ouvrirResultats(b.dataset.id); break;
+    case 'res-tri': F.resTri = b.dataset.v; rendre(); break;
+    case 'imprimer': try { window.print(); } catch(err){ toast('Impression indisponible ici : utilisez le menu du navigateur.'); } break;
     case 'csv': { const csv = genererCSV(F.res), nom = `quizlive85_${F.res.pin}_${String(F.res.created_at).slice(0,10)}.csv`;
       modale(`<div class="balisage"></div><div class="corps"><h3>Export CSV</h3><p class="etiquette" style="margin:0 0 12px">Séparateur « ; », s’ouvre directement dans Excel.</p><textarea id="csv-txt" readonly aria-label="Contenu CSV">${esc(csv)}</textarea><p id="csv-msg" class="etiquette" role="status"></p></div>
         <div class="pied"><button class="btn fant" data-act="fermer">Fermer</button><button class="btn" data-act="copier-csv">Copier</button><button class="btn or" data-act="dl-csv" data-nom="${esc(nom)}" autofocus>Télécharger</button></div>`); break; }
@@ -1785,12 +1889,16 @@ document.addEventListener('input', e => {
   if (!F.edit) return;
   const q = F.edit.q.questions[F.edit.qi];
   if (a === 'titre-quiz') F.edit.q.titre = t.value;
+  if (a === 'service-quiz'){ F.edit.q.service = t.value; ecrire('ql85_service', t.value); }
   if (a === 'champ-q'){ q[t.dataset.k] = t.dataset.num ? +t.value : t.value; const cc = $(`.compteur-car[data-pour="${t.dataset.k}"]`); if (cc) cc.textContent = `${t.value.length} / ${t.maxLength}`; if (t.tagName === 'SELECT') rendre(); else majListe(); }
   if (a === 'rep-q'){ q.reponses[+t.dataset.i] = t.value; majListe(); }
   aSauver();
 });
 document.addEventListener('change', e => {
-  const t = e.target, a = t.dataset.act; if (!a || !F.edit) return;
+  const t = e.target, a = t.dataset.act;
+  if (a === 'f-service'){ F.service = t.value; rendre(); return; }
+  if (a === 'f-tri'){ F.tri = t.value; rendre(); return; }
+  if (!a || !F.edit) return;
   const q = F.edit.q.questions[F.edit.qi];
   if (a === 'theme-quiz'){ F.edit.q.theme = t.value; aSauver(); }
   if (a === 'image-q' && t.files[0]) reduireImage(t.files[0]).then(d => { q.imageData = d; delete q.image; rendre(); aSauver(); }).catch(() => toast('Image illisible.'));
